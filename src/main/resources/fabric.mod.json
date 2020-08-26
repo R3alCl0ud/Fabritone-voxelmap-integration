@@ -3,13 +3,14 @@
 	"id": "voxitone",
 	"version": "${version}",
 	"name": "Voxitone",
-	"description": "Fabritone integration for Voxel's Minimap'",
+	"description": "Fabritone integration for Voxel's Minimap",
 	"authors": [
 		"R3alCl0ud"
 	],
 	"contact": {
 		"homepage": "https://r3alcl0ud.xyz/voxitone",
-		"sources": "https://github.com/r3alcl0ud/Fabritone-voxelmap-integration"
+		"sources": "https://github.com/r3alcl0ud/Fabritone-voxelmap-integration",
+		"issues":"https://github.com/r3alcl0ud/Fabritone-voxelmap-integration/issues"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/voxitone/icon.png",

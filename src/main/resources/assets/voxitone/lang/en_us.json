@@ -1,0 +1,10 @@
+{
+	"title.voxitone.config": "Voxitone Config",
+	"category.voxitone.general": "General Settings",
+	"option.voxitone.close": "Close map on path",
+	"option.voxitone.close.tooltip": "Should VoxelMap close when pathing is started.",
+	"option.voxitone.tempwaypoint": "Create Temporary Waypoints",
+	"option.voxitone.tempwaypoint.tooltip": "Should A Temporary Waypoint be created.",
+	"option.voxitone.enablewaypoint": "Make waypoint visible",
+	"option.voxitone.enablewaypoint.tooltip": "Should the temporary waypoint be visible."
+}
