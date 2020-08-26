@@ -10,14 +10,35 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+
+repositories {
+	flatDir {
+		dirs 'libs'
+	}
+		maven {url = "https://impactdevelopment.github.io/maven/"}
+	maven {
+        name "Modmuss50 Repository"
+        url 'https://maven.fabricmc.net/'
+    }
+
+}
+
 dependencies {
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	//mappings "net.fabricmc:intermediary:1.16.2:v2"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	//modRuntime name: "fabricmod_VoxelMap-1.10.10_for_1.16.2"
+	modImplementation name: "fabric-example-mod-1.0.0-dev"
+	implementation "cabaletta:baritone-api:1.4"
+	
+	modImplementation("io.github.prospector:modmenu:${project.mod_menu_version}") {
+        transitive = false
+    }
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
