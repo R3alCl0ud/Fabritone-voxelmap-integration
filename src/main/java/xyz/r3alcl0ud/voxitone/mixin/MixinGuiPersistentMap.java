@@ -17,6 +17,7 @@ import baritone.api.IBaritone;
 import baritone.api.pathing.goals.GoalBlock;
 import baritone.api.pathing.goals.GoalXZ;
 import net.minecraft.client.MinecraftClient;
+import xyz.r3alcl0ud.voxitone.BaritoneEventListener;
 import xyz.r3alcl0ud.voxitone.Voxitone;
 
 @Mixin(value = GuiPersistentMap.class, remap = false)
@@ -76,6 +77,7 @@ public class MixinGuiPersistentMap {
             if (hovered != null) {
                 // System.out.println("Holy fuck bros! We've got a waypoint");
                 // System.out.printf("X: %d, Y:%d, Z:%d\n", hovered.x, hovered.y, hovered.z);
+                BaritoneEventListener.goalWP = hovered;
                 GoalBlock gb = new GoalBlock(hovered.x, hovered.y, hovered.z);
                 baritone.getCustomGoalProcess().setGoalAndPath(gb);
             } else {

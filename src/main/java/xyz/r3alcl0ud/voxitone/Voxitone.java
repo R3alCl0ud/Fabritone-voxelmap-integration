@@ -18,7 +18,6 @@ public class Voxitone implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        System.out.println("This is a test made by an insane person");
         File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "voxitone.json");
         Gson gson = new Gson();
         if (configFile.exists()) {

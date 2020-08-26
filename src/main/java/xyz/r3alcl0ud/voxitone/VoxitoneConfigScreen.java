@@ -9,17 +9,22 @@ import net.minecraft.text.Text;
 public class VoxitoneConfigScreen extends Screen {
 
     private Screen parent;
-
     private Text closeOnPath;
+    private static VoxitoneConfig defaultConfig = new VoxitoneConfig();
 
-    private ButtonWidget toggleCloseOnPath;
+    private MyButtonWidget toggleCloseOnPath;
+    private ButtonWidget toggleCloseOnPathReset;
     private ButtonWidget close;
     private ButtonWidget closeAndSave;
 
     private boolean originalState;
 
     private float fillWidth = 400;
-
+    // these will be reassigned by init
+    private int center = 0;
+    private int left;
+    private int right;
+    
     public VoxitoneConfigScreen(Screen parent) {
         this(new LiteralText("Voxitone Config"));
         this.parent = parent;
@@ -37,44 +42,62 @@ public class VoxitoneConfigScreen extends Screen {
 
     public void init() {
         super.init();
-        closeOnPath = new LiteralText(Voxitone.config.closeOnPath ? "True" : "False");
-        toggleCloseOnPath = new ButtonWidget(0, 30, 100, 20, new LiteralText("Close map on path"), (b) -> {
+
+        left = (int) ((width / 2) - (fillWidth / 2));
+        right = (int) ((width / 2) + (fillWidth / 2));
+        center = width / 2;
+        
+        closeOnPath = new LiteralText("Close map on path: ");
+        
+        
+        // options
+        
+        // TOGGLE CLOSE ON PATH
+        toggleCloseOnPath = this.addButton(new MyButtonWidget(center + 5, 60, 100, 20, new LiteralText(Voxitone.config.closeOnPath ? "True" : "False"), (b) -> {
             Voxitone.config.closeOnPath = !Voxitone.config.closeOnPath;
-            closeOnPath = new LiteralText(Voxitone.config.closeOnPath ? "True" : "False");
-        });
-        close = new ButtonWidget(0, this.height - 30, 100, 20, new LiteralText("Close"), (b) -> {
+            toggleCloseOnPathReset.active = Voxitone.config.closeOnPath != defaultConfig.closeOnPath;
+            b.setMessage(new LiteralText(Voxitone.config.closeOnPath ? "True" : "False"));
+            ((MyButtonWidget)b).setTextColor(Voxitone.config.closeOnPath ? 0xFF00FF00 : 0xFFFF0000);
+        }));
+        toggleCloseOnPath.setTextColor(Voxitone.config.closeOnPath ? 0xFF00FF00 : 0xFFFF0000);
+        
+        toggleCloseOnPathReset = this.addButton(new ButtonWidget(center + 110, 60, 50, 20, new LiteralText("Reset"), (b) -> {
+            Voxitone.config.closeOnPath = defaultConfig.closeOnPath;
+            toggleCloseOnPath.setMessage(new LiteralText(Voxitone.config.closeOnPath ? "True" : "False"));
+            toggleCloseOnPath.setTextColor(Voxitone.config.closeOnPath ? 0xFF00FF00 : 0xFFFF0000);
+            b.active = false;
+        }));
+        toggleCloseOnPathReset.active = Voxitone.config.closeOnPath != defaultConfig.closeOnPath;
+        
+        
+        
+        
+        
+        // close
+        close = this.addButton(new ButtonWidget((int) (width / 2) - 105, this.height - 30, 100, 20, new LiteralText("Close"), (b) -> {
             Voxitone.config.closeOnPath = originalState;
-            closeOnPath = new LiteralText(Voxitone.config.closeOnPath ? "True" : "False");
+            toggleCloseOnPath.setMessage(new LiteralText(Voxitone.config.closeOnPath ? "True" : "False"));
             onClose();
-        });
-        closeAndSave = new ButtonWidget(0, this.height - 30, 100, 20, new LiteralText("Close & Save"), (b) -> {
+        }));
+        closeAndSave = this.addButton(new ButtonWidget((int) (width / 2) + 5, this.height - 30, 100, 20, new LiteralText("Close & Save"), (b) -> {
             Voxitone.saveConfig();
             onClose();
-        });
-        this.addButton(toggleCloseOnPath);
-        this.addButton(close);
-        this.addButton(closeAndSave);
-
+        }));
     }
 
     public void render(MatrixStack matrices, int mX, int mY, float d) {
         this.renderBackgroundTexture(0);
-        float left = (width / 2) - (fillWidth / 2);
-        float right = (width / 2) + (fillWidth / 2);
-        fill(matrices, (int) left, 45, (int) right, height - 50,
+        fill(matrices, left, 45, right, height - 50,
             0x99000000);
-        super.render(matrices, mX, mY, d);
-        int help = 60;
-        toggleCloseOnPath.y = help;
-        toggleCloseOnPath.x = (int)left + 10;
-        close.x = (int) (width / 2) - 105;
-        close.y = this.height - 30;
-        closeAndSave.x = (int) (width / 2) + 5;
-        closeAndSave.y = this.height - 30;
         drawCenteredText(matrices, textRenderer, title, width / 2, 15, 0xFFFFFF);
         // drawTextWithShadow(matrices, textRenderer, title, width / 2 - 20, 10,
         // 0xFFFFFF);
-        drawTextWithShadow(matrices, textRenderer, closeOnPath,(int) right - 35, help,
-            Voxitone.config.closeOnPath ? 0x00FF00 : 0xFF0000);
+        
+        if (mY >= 58 && mY <= 82) {
+            fill(matrices, left, 58, right, 82, 0x2FFFFFFF);
+        }
+        drawCenteredText(matrices, textRenderer, closeOnPath, center - 55, 66, 0xFFFFFF);
+        super.render(matrices, mX, mY, d);
+        
     }
 }

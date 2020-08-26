@@ -17,7 +17,7 @@ public class MixinPopupGuiScreen {
     @Inject(remap = false,at = @At("HEAD"), method = "createPopup")
     public void onCreatePopup(int x, int y, int dX, int dY, ArrayList<Popup.PopupEntry> entries,CallbackInfo info) {
         if ((Object) this instanceof GuiPersistentMap) {
-            entries.add(new Popup.PopupEntry("Goto Location", 420, true, true));
+            entries.add(new Popup.PopupEntry("Path To", 420, true, true));
         }
     }
 
