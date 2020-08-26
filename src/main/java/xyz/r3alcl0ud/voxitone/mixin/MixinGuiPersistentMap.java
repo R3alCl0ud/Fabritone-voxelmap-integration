@@ -60,7 +60,7 @@ public class MixinGuiPersistentMap {
     @Inject(remap = false, cancellable = true, at = @At("TAIL"), method = "popupAction")
     private void onPopupAction(Popup p, int action, CallbackInfo info) {
         if (action == 420) {
-            System.out.println("Help me");
+            System.out.println("Just kidding this is actually supposed to happen");
             int mouseX = p.clickedDirectX, mouseY = (int) Math.floor(p.clickedDirectY - top * guiToDirectMouse);
             float actualX, actualZ;
             if (this.oldNorth) {
@@ -74,14 +74,14 @@ public class MixinGuiPersistentMap {
             Waypoint hovered = getHovered(actualX, actualZ);
             IBaritone baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
             if (hovered != null) {
-                System.out.println("Holy fuck bros! We've got a waypoint");
-                System.out.printf("X: %d, Y:%d, Z:%d\n", hovered.x, hovered.y, hovered.z);
+                // System.out.println("Holy fuck bros! We've got a waypoint");
+                // System.out.printf("X: %d, Y:%d, Z:%d\n", hovered.x, hovered.y, hovered.z);
                 GoalBlock gb = new GoalBlock(hovered.x, hovered.y, hovered.z);
                 baritone.getCustomGoalProcess().setGoalAndPath(gb);
             } else {
-                System.out.println("Aww, no waypoint :(");
+                // System.out.println("Aww, no waypoint :(");
                 try {
-                    System.out.printf("X: %f, Z:%f\n", actualX, actualZ);
+                    // System.out.printf("X: %f, Z:%f\n", actualX, actualZ);
                     GoalXZ gb = new GoalXZ((int) Math.floor(actualX), (int) Math.floor(actualZ));
                     baritone.getCustomGoalProcess().setGoalAndPath(gb);
                 } catch (Exception e) {
@@ -91,9 +91,6 @@ public class MixinGuiPersistentMap {
             if (Voxitone.config.closeOnPath) {
                 MinecraftClient.getInstance().openScreen(null);
             }
-            // WaypointManager wm = (WaypointManager)
-            // AbstractVoxelMap.instance.getWaypointManager();
-            info.cancel();
         }
     }
 
