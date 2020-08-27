@@ -32,6 +32,16 @@ public class BaritoneEventListener implements IGameEventListener {
     public static Waypoint goalWP = null;
     public static IBaritone baritone = null;
     
+    public static Waypoint genWaypoint() {
+        goalWP = new Waypoint("^Baritone Goal", 0, 0, 0, Voxitone.config.shouldWaypointEnable, 0F, 1F, 0F, "", AbstractVoxelMap.instance.getWaypointManager().getCurrentSubworldDescriptor(false), new TreeSet<>());
+        World world;
+        if ((world = (World)mc.world) != null) {
+            DimensionContainer dim = AbstractVoxelMap.getInstance().getDimensionManager().getDimensionContainerByWorld(world);
+            goalWP.dimensions.add(dim);
+        }
+        return goalWP;
+    }
+    
     @Override
     public void onBlockInteract(BlockInteractEvent arg0) {}
 
@@ -40,41 +50,47 @@ public class BaritoneEventListener implements IGameEventListener {
 
     @Override
     public void onPathEvent(PathEvent arg0) {
-        System.out.println("path event");
-        if (goalWP == null) {
-            goalWP = new Waypoint("^Baritone Goal", 0, 0, 0, false, 0F, 1F, 0F, "", AbstractVoxelMap.instance.getWaypointManager().getCurrentSubworldDescriptor(false), null);
-            baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
-        }
-        if (goalWP.name == "^Baritone Goal") {
-            TreeSet<DimensionContainer> dims = new TreeSet<>();
-            World world;
-            if ((world = (World)mc.world) != null) {
-                DimensionContainer dim = AbstractVoxelMap.getInstance().getDimensionManager().getDimensionContainerByWorld(world);
-                dims.add(dim);
-            }
-            goalWP.dimensions = dims;
-        }
-        Goal g;
-        if ((g = baritone.getCustomGoalProcess().getGoal()) != null) {
-            if (g instanceof GoalBlock) {
-                goalWP.x = ((GoalBlock)g).x;
-                goalWP.y = ((GoalBlock)g).y;
-                goalWP.z = ((GoalBlock)g).z;
-                if (!AbstractVoxelMap.instance.getWaypointManager().getWaypoints().contains(goalWP))
-                    AbstractVoxelMap.instance.getWaypointManager().addWaypoint(goalWP);
-                return;
-            } else if (g instanceof GoalXZ) {
-                goalWP.x = ((GoalXZ)g).getX();
-                goalWP.z = ((GoalXZ)g).getX();
-                if (!AbstractVoxelMap.instance.getWaypointManager().getWaypoints().contains(goalWP))
-                    AbstractVoxelMap.instance.getWaypointManager().addWaypoint(goalWP);
+        synchronized (this) {
+            if (!Voxitone.config.tempWaypoints) {
+                if (goalWP != null && goalWP.name == "^Baritone Goal")
+                    AbstractVoxelMap.instance.getWaypointManager().deleteWaypoint(goalWP);
                 return;
             }
-        }
-        if (goalWP.name == "^Baritone Goal") {
-            AbstractVoxelMap.instance.getWaypointManager().deleteWaypoint(goalWP);
-        } else {
-            goalWP = null;
+            if (goalWP == null) {
+                genWaypoint();
+                baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
+            }
+            if (goalWP.name == "^Baritone Goal") {
+                World world;
+                if ((world = (World)mc.world) != null) {
+                    DimensionContainer dim = AbstractVoxelMap.getInstance().getDimensionManager().getDimensionContainerByWorld(world);
+                    goalWP.dimensions.add(dim);
+                }
+                goalWP.enabled = Voxitone.config.shouldWaypointEnable;
+            }
+            
+            Goal g;
+            if ((g = baritone.getCustomGoalProcess().getGoal()) != null) {
+                if (g instanceof GoalBlock) {
+                    goalWP.x = ((GoalBlock)g).x;
+                    goalWP.y = ((GoalBlock)g).y;
+                    goalWP.z = ((GoalBlock)g).z;
+                    if (!AbstractVoxelMap.instance.getWaypointManager().getWaypoints().contains(goalWP))
+                        AbstractVoxelMap.instance.getWaypointManager().addWaypoint(goalWP);
+                    return;
+                } else if (g instanceof GoalXZ) {
+                    goalWP.x = ((GoalXZ)g).getX();
+                    goalWP.z = ((GoalXZ)g).getZ();
+                    if (!AbstractVoxelMap.instance.getWaypointManager().getWaypoints().contains(goalWP))
+                        AbstractVoxelMap.instance.getWaypointManager().addWaypoint(goalWP);
+                    return;
+                }
+            }
+            if (goalWP.name == "^Baritone Goal") {
+                AbstractVoxelMap.instance.getWaypointManager().deleteWaypoint(goalWP);
+            } else {
+                goalWP = null;
+            }
         }
     }
 
