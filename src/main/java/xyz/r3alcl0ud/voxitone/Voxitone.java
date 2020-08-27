@@ -15,7 +15,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Voxitone implements ClientModInitializer {
     public static VoxitoneConfig config;
-    public static BaritoneEventListener l = null;
+    public static BaritoneEventListener listener = null;
 
     @Override
     public void onInitializeClient() {

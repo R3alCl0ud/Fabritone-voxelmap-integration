@@ -69,7 +69,7 @@ public class MixinGuiPersistentMap {
     @Inject(remap = false, cancellable = true, at = @At("TAIL"), method = "popupAction")
     private void onPopupAction(Popup popup, int action, CallbackInfo info) {
         if (action == 420) {
-            synchronized (Voxitone.l) {
+            synchronized (Voxitone.listener) {
                 float x, z;
                 if (this.oldNorth) {
                     x = (popup.clickedDirectY - this.top * this.guiToDirectMouse) * this.mouseDirectToMap + this.mapCenterZ
@@ -93,13 +93,9 @@ public class MixinGuiPersistentMap {
                     gb = new GoalBlock(hovered.x, hovered.y, hovered.z);
                 } else {
                     if (BaritoneEventListener.goalWP != null && Voxitone.config.tempWaypoints) {
-                        if (!(BaritoneEventListener.goalWP.name == "^Baritone Goal")) {
-                            BaritoneEventListener.genWaypoint();
-                            waypointManager.addWaypoint(BaritoneEventListener.goalWP);
-                        }
-                        BaritoneEventListener.goalWP.x = (int)x;
-                        BaritoneEventListener.goalWP.y = (int)y;
-                        BaritoneEventListener.goalWP.z = (int)z;
+                        if (!(BaritoneEventListener.goalWP.name == "^Baritone Goal"))
+                            waypointManager.addWaypoint(BaritoneEventListener.genWaypoint());
+                        BaritoneEventListener.setPos((int)x, y, (int)z);
                     }
                     
                     gb = y == 0 ? new GoalXZ(new BetterBlockPos((int) x, y, (int) z)) : new GoalBlock((int) x, y, (int) z);
