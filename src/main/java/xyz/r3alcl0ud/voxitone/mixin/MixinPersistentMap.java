@@ -35,7 +35,7 @@ public class MixinPersistentMap {
             IPath path = baritone.getPathingBehavior().getCurrent().getPath();
             for (BetterBlockPos pos : path.positions()) {
                 if (pos.x == x && pos.z == z) {
-                    info.setReturnValue(0xFF000000 & BaritoneAPI.getSettings().colorCurrentPath.value.getRGB());
+                    info.setReturnValue(0xFF000000 | BaritoneAPI.getSettings().colorCurrentPath.value.getRGB());
                     info.cancel();
                     return;
                 }

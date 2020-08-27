@@ -40,7 +40,7 @@ public class MixinMap {
             int x = sX + iX, z = sZ + iY;
             for (BetterBlockPos pos : baritone.getPathingBehavior().getCurrent().getPath().positions()) {
                 if (pos.x == x && pos.z == z) {
-                    info.setReturnValue(0xFF000000 & BaritoneAPI.getSettings().colorCurrentPath.value.getRGB());
+                    info.setReturnValue(0xFF000000 | BaritoneAPI.getSettings().colorCurrentPath.value.getRGB());
                     info.cancel();
                     return;
                 }
