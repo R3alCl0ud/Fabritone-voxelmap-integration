@@ -60,7 +60,7 @@ public class VoxitoneMenu implements ModMenuApi {
                 new LiteralText("§7Default: True"));
             cT.setDefaultValue(true);
             cT.setSaveConsumer(newValue -> {
-                Voxitone.config.shouldWaypointEnable = newValue;
+                Voxitone.config.drawPathOnMinimap = newValue;
             });
             general.addEntry(cT.build());
             
@@ -71,7 +71,7 @@ public class VoxitoneMenu implements ModMenuApi {
                 new LiteralText("§7Default: True"));
             cT.setDefaultValue(true);
             cT.setSaveConsumer(newValue -> {
-                Voxitone.config.shouldWaypointEnable = newValue;
+                Voxitone.config.drawPathOnMap = newValue;
             });
             general.addEntry(cT.build());
             
