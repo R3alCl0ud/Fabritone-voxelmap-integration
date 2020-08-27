@@ -18,7 +18,7 @@ public class MixinClientPlayNetworkHandler {
     public void jsmacros_onGameJoin(GameJoinS2CPacket packet, CallbackInfo info) {
         if (Voxitone.l == null) {
             Voxitone.l = new BaritoneEventListener();
-            BaritoneAPI.getProvider().getPrimaryBaritone().getGameEventHandler().registerEventListener(Voxitone.l);
         }
+        BaritoneAPI.getProvider().getPrimaryBaritone().getGameEventHandler().registerEventListener(Voxitone.l);
     }
 }

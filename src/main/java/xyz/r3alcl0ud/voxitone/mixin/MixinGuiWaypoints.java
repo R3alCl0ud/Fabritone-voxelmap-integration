@@ -55,7 +55,7 @@ public abstract class MixinGuiWaypoints extends Screen {
     
     @Inject(at = @At("TAIL"), method = "setSelectedWaypoint", remap = false)
     protected void setSelectedWaypoint(Waypoint waypoint, CallbackInfo info) {
-        pathTo.active = waypoint != null;
+        pathTo.active = waypoint != null && BaritoneEventListener.goalWP != waypoint;
     }
 
     
