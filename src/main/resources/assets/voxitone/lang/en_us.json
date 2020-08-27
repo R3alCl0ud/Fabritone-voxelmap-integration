@@ -6,5 +6,7 @@
 	"option.voxitone.tempwaypoint": "Create Temporary Waypoints",
 	"option.voxitone.tempwaypoint.tooltip": "Should A Temporary Waypoint be created.",
 	"option.voxitone.enablewaypoint": "Make waypoint visible",
-	"option.voxitone.enablewaypoint.tooltip": "Should the temporary waypoint be visible."
+	"option.voxitone.enablewaypoint.tooltip": "Should the temporary waypoint be visible.",
+	"option.voxitone.drawonminimap": "Draw Path on Minimap",
+	"option.voxitone.drawonminimap.tooltip": "Whether or not the current path should be drawn on the minimap."
 }

@@ -15,7 +15,7 @@ import xyz.r3alcl0ud.voxitone.Voxitone;
 public class MixinClientPlayNetworkHandler {
     
     @Inject(at = @At("TAIL"), method="onGameJoin")
-    public void jsmacros_onGameJoin(GameJoinS2CPacket packet, CallbackInfo info) {
+    public void onGameJoin(GameJoinS2CPacket packet, CallbackInfo info) {
         if (Voxitone.listener == null) {
             Voxitone.listener = new BaritoneEventListener();
         }

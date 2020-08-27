@@ -7,6 +7,8 @@ public class VoxitoneConfig {
     
     public boolean shouldWaypointEnable = true;
     
+    public boolean drawPathOnMinimap = true;
+    
     public VoxitoneConfig() {
 
     }
