@@ -9,6 +9,9 @@ public class VoxitoneConfig {
     
     public boolean drawPathOnMinimap = true;
     
+    public boolean drawPathOnMap = true;
+    
+    
     public VoxitoneConfig() {
 
     }

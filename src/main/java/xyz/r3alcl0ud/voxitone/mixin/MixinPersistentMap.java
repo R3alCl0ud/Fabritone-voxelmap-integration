@@ -15,6 +15,7 @@ import baritone.api.IBaritone;
 import baritone.api.pathing.calc.IPath;
 import baritone.api.utils.BetterBlockPos;
 import net.minecraft.client.world.ClientWorld;
+import xyz.r3alcl0ud.voxitone.Voxitone;
 
 @Mixin(value = PersistentMap.class, remap = false)
 public class MixinPersistentMap {
@@ -28,13 +29,13 @@ public class MixinPersistentMap {
         CallbackInfoReturnable<Integer> info) {
 
 
-        if (baritone.getPathingBehavior().isPathing()) {
+        if (Voxitone.config.drawPathOnMap && baritone.getPathingBehavior().isPathing()) {
             // System.out.println("Jesus is taking the wheel");
             int x = startX + imageX, z = startZ + imageY;
             IPath path = baritone.getPathingBehavior().getCurrent().getPath();
             for (BetterBlockPos pos : path.positions()) {
                 if (pos.x == x && pos.z == z) {
-                    info.setReturnValue(0xFFFF0000);
+                    info.setReturnValue(0xFF000000 & BaritoneAPI.getSettings().colorCurrentPath.value.getRGB());
                     info.cancel();
                     return;
                 }

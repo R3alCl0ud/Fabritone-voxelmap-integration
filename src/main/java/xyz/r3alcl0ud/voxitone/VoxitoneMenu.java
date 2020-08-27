@@ -64,6 +64,17 @@ public class VoxitoneMenu implements ModMenuApi {
             });
             general.addEntry(cT.build());
             
+            // toggle draw on map
+            cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.drawonmap"),
+                Voxitone.config.drawPathOnMap);
+            cT.setTooltip(new TranslatableText("option.voxitone.drawonmap.tooltip"),
+                new LiteralText("§7Default: True"));
+            cT.setDefaultValue(true);
+            cT.setSaveConsumer(newValue -> {
+                Voxitone.config.shouldWaypointEnable = newValue;
+            });
+            general.addEntry(cT.build());
+            
             builder.setSavingRunnable(() -> {
                 Voxitone.saveConfig();
             });

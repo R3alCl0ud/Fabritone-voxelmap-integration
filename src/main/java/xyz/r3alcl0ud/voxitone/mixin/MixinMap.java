@@ -14,6 +14,7 @@ import baritone.api.IBaritone;
 import baritone.api.utils.BetterBlockPos;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.world.World;
+import xyz.r3alcl0ud.voxitone.Voxitone;
 
 @Mixin(value = Map.class, remap = false)
 public class MixinMap {
@@ -35,11 +36,11 @@ public class MixinMap {
     public void getPixelColor(boolean needBiome, boolean needHeightAndID, boolean needTint, boolean needLight,
         boolean nether,
         boolean caves, World world, int multi, int sX, int sZ, int iX, int iY, CallbackInfoReturnable<Integer> info) {
-        if (baritone.getPathingBehavior().isPathing()) {
+        if (Voxitone.config.drawPathOnMinimap && baritone.getPathingBehavior().isPathing()) {
             int x = sX + iX, z = sZ + iY;
             for (BetterBlockPos pos : baritone.getPathingBehavior().getCurrent().getPath().positions()) {
                 if (pos.x == x && pos.z == z) {
-                    info.setReturnValue(0xFFFF0000);
+                    info.setReturnValue(0xFF000000 & BaritoneAPI.getSettings().colorCurrentPath.value.getRGB());
                     info.cancel();
                     return;
                 }
