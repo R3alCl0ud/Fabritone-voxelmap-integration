@@ -17,6 +17,7 @@ import baritone.api.IBaritone;
 import baritone.api.pathing.goals.GoalBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -42,7 +43,13 @@ public abstract class MixinGuiWaypoints extends Screen {
     @Inject(at = @At("TAIL"), method = "method_25426", remap = false)
     public void init(CallbackInfo info) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        pathTo = addButton(new ButtonWidget(width / 2 + 158, height - 28, 74, 20, new LiteralText("Path To"), (b) -> {
+        for (AbstractButtonWidget b : buttons) {
+            if (b.x == width / 2 + 80 && b.y == height - 28) {
+                b.x = width / 2 + 158;
+            }
+        }
+        
+        pathTo = addButton(new ButtonWidget(width / 2 + 80, height - 28, 74, 20, new LiteralText("Path To"), (b) -> {
             if (BaritoneEventListener.goalWP != null && BaritoneEventListener.goalWP.name == "^Baritone Goal")
                 waypointManager.deleteWaypoint(BaritoneEventListener.goalWP);
             BaritoneEventListener.goalWP = selectedWaypoint;
