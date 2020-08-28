@@ -30,6 +30,7 @@ public class MixinMap {
     @Inject(at = @At("TAIL"), method = "renderMapFull", remap = false)
     public void renderMap(MatrixStack stack, int width, int height, CallbackInfo info) {
         // System.out.printf("X: %d, Y: %d", width, height);
+
     }
 
     @Inject(at = @At("RETURN"), method = "getPixelColor", remap = false, cancellable = true)
@@ -47,5 +48,4 @@ public class MixinMap {
             }
         }
     }
-
 }

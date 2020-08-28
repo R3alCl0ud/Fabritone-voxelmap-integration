@@ -23,6 +23,7 @@ import baritone.api.event.events.TabCompleteEvent;
 import baritone.api.event.events.TickEvent;
 import baritone.api.event.events.WorldEvent;
 import baritone.api.event.listener.IGameEventListener;
+import baritone.api.pathing.calc.IPath;
 import baritone.api.pathing.goals.Goal;
 import baritone.api.pathing.goals.GoalBlock;
 import baritone.api.pathing.goals.GoalXZ;
@@ -36,7 +37,9 @@ public class BaritoneEventListener implements IGameEventListener {
     public static IDimensionManager dimensionManager;
     public static Waypoint goalWP = null;
     public static IBaritone baritone = null;
-    
+
+    public static IPath oldPath = null;
+
     public static void loadStuff() {
         baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
         if (!stuffLoaded) {
@@ -45,17 +48,18 @@ public class BaritoneEventListener implements IGameEventListener {
             stuffLoaded = true;
         }
     }
-    
+
     public static Waypoint genWaypoint() {
-        goalWP = new Waypoint("^Baritone Goal", 0, 0, 0, Voxitone.config.shouldWaypointEnable, 0F, 1F, 0F, "star", waypointManager.getCurrentSubworldDescriptor(false), new TreeSet<>());
+        goalWP = new Waypoint("^Baritone Goal", 0, 0, 0, Voxitone.config.shouldWaypointEnable, 0F, 1F, 0F, "star",
+            waypointManager.getCurrentSubworldDescriptor(false), new TreeSet<>());
         World world;
-        if ((world = (World)mc.world) != null) {
+        if ((world = (World) mc.world) != null) {
             DimensionContainer dim = dimensionManager.getDimensionContainerByWorld(world);
             goalWP.dimensions.add(dim);
         }
         return goalWP;
     }
-    
+
     protected static boolean setPos(int x, int z, double scale) {
         if (goalWP == null)
             genWaypoint();
@@ -65,16 +69,16 @@ public class BaritoneEventListener implements IGameEventListener {
         goalWP.z = (int) (z * scale);
         return true;
     }
-    
+
     public static boolean setPos(int x, int z) {
         World world;
-        if ((world = (World)mc.world) != null) {
+        if ((world = (World) mc.world) != null) {
             return setPos(x, z, world.getDimension().getCoordinateScale());
         } else {
             return setPos(x, z, 1D);
         }
     }
-    
+
     public static boolean setPos(int x, int y, int z) {
         if (setPos(x, z)) {
             goalWP.y = (int) y;
@@ -85,49 +89,60 @@ public class BaritoneEventListener implements IGameEventListener {
 
     @Override
     public void onPathEvent(PathEvent arg0) {
-        
+
         synchronized (this) {
             loadStuff();
-            
-            //remove temp waypoint if config disables them, shortcut rest of function
+
+            // arg0.
+            if (baritone.getPathingBehavior().getCurrent() != null) {
+                IPath path = baritone.getPathingBehavior().getCurrent().getPath();
+                if (oldPath == null || !oldPath.equals(path)) {
+                    oldPath = path;
+                    AbstractVoxelMap.instance.getMap().forceFullRender(true);
+                }
+            }
+
+
+            // remove temp waypoint if config disables them, shortcut rest of function
             if (!Voxitone.config.tempWaypoints && goalWP != null && goalWP.name == "^Baritone Goal") {
                 waypointManager.deleteWaypoint(goalWP);
                 return;
             }
-            
+
             if (goalWP == null) genWaypoint();
-            
-            //update dimension list for goal wp
+
+            // update dimension list for goal wp
             if (goalWP.name == "^Baritone Goal") {
                 World world;
-                if ((world = (World)mc.world) != null) {
-                    DimensionContainer dim = AbstractVoxelMap.getInstance().getDimensionManager().getDimensionContainerByWorld(world);
+                if ((world = (World) mc.world) != null) {
+                    DimensionContainer dim = AbstractVoxelMap.getInstance().getDimensionManager()
+                        .getDimensionContainerByWorld(world);
                     goalWP.dimensions.add(dim);
                 }
                 goalWP.enabled = Voxitone.config.shouldWaypointEnable;
             }
-            
-            //update goal location
+
+            // update goal location
             Goal g;
             if ((g = baritone.getCustomGoalProcess().getGoal()) != null) {
                 if (g instanceof GoalBlock) {
-                    setPos(((GoalBlock)g).x, ((GoalBlock)g).y, ((GoalBlock)g).z);
-                    
-                    //add waypoint
+                    setPos(((GoalBlock) g).x, ((GoalBlock) g).y, ((GoalBlock) g).z);
+
+                    // add waypoint
                     if (!waypointManager.getWaypoints().contains(goalWP))
                         waypointManager.addWaypoint(goalWP);
                     return;
                 } else if (g instanceof GoalXZ) {
-                    setPos(((GoalXZ)g).getX(), ((GoalXZ)g).getZ());
-                    
-                    //add waypoint
+                    setPos(((GoalXZ) g).getX(), ((GoalXZ) g).getZ());
+
+                    // add waypoint
                     if (!waypointManager.getWaypoints().contains(goalWP))
                         waypointManager.addWaypoint(goalWP);
                     return;
                 }
             }
-            
-            //remove waypoint since goal isn't handled or is null
+
+            // remove waypoint since goal isn't handled or is null
             if (goalWP.name == "^Baritone Goal") {
                 waypointManager.deleteWaypoint(goalWP);
             } else {
@@ -137,14 +152,14 @@ public class BaritoneEventListener implements IGameEventListener {
     }
 
 
-    //We need these to complete the interface
-    
+    // We need these to complete the interface
+
     @Override
     public void onBlockInteract(BlockInteractEvent arg0) {}
 
     @Override
     public void onChunkEvent(ChunkEvent arg0) {}
-    
+
     @Override
     public void onPlayerDeath() {}
 

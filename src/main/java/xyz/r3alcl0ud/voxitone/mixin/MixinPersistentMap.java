@@ -27,12 +27,13 @@ public class MixinPersistentMap {
     public void getPixelColor(AbstractMapData mapData, ClientWorld world, MutableBlockPos blockPos,
         MutableBlockPos loopBlockPos, boolean underground, int multi, int startX, int startZ, int imageX, int imageY,
         CallbackInfoReturnable<Integer> info) {
-
+        // AbstractVoxelMap.instance.getMap().forceFullRender(true);
 
         if (Voxitone.config.drawPathOnMap && baritone.getPathingBehavior().isPathing()) {
             // System.out.println("Jesus is taking the wheel");
             int x = startX + imageX, z = startZ + imageY;
             IPath path = baritone.getPathingBehavior().getCurrent().getPath();
+            // baritone.getPathingBehavior().getCurrent().getPath().equals()
             for (BetterBlockPos pos : path.positions()) {
                 if (pos.x == x && pos.z == z) {
                     info.setReturnValue(0xFF000000 | BaritoneAPI.getSettings().colorCurrentPath.value.getRGB());
