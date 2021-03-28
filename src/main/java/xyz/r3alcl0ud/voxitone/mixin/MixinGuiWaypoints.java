@@ -40,7 +40,7 @@ public abstract class MixinGuiWaypoints extends Screen {
     @Shadow(remap = false)
     protected Waypoint selectedWaypoint;
     
-    @Inject(at = @At("TAIL"), method = "init")
+    @Inject(at = @At("TAIL"), method = {"init", "method_25426"}, require = 1)
     public void init(CallbackInfo info) {
         MinecraftClient mc = MinecraftClient.getInstance();
         for (AbstractButtonWidget b : buttons) {
