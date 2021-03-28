@@ -40,7 +40,7 @@ public abstract class MixinGuiWaypoints extends Screen {
     @Shadow(remap = false)
     protected Waypoint selectedWaypoint;
     
-    @Inject(at = @At("TAIL"), method = "method_25426", remap = false)
+    @Inject(at = @At("TAIL"), method = "init")
     public void init(CallbackInfo info) {
         MinecraftClient mc = MinecraftClient.getInstance();
         for (AbstractButtonWidget b : buttons) {
@@ -50,10 +50,10 @@ public abstract class MixinGuiWaypoints extends Screen {
         }
         
         pathTo = addButton(new ButtonWidget(width / 2 + 80, height - 28, 74, 20, new LiteralText("Path To"), (b) -> {
-            if (BaritoneEventListener.goalWP != null && BaritoneEventListener.goalWP.name == "^Baritone Goal")
+            if (BaritoneEventListener.goalWP != null && BaritoneEventListener.goalWP.name.equals("^Baritone Goal"))
                 waypointManager.deleteWaypoint(BaritoneEventListener.goalWP);
             BaritoneEventListener.goalWP = selectedWaypoint;
-            baritone.getCustomGoalProcess().setGoalAndPath(new GoalBlock(selectedWaypoint.x, selectedWaypoint.y, selectedWaypoint.z));
+            baritone.getCustomGoalProcess().setGoalAndPath(new GoalBlock(selectedWaypoint.getX(), selectedWaypoint.getY(), selectedWaypoint.getZ()));
             if (Voxitone.config.closeOnPath) mc.openScreen(null);
             
         }));

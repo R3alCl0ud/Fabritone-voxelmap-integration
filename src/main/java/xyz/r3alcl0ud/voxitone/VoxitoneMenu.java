@@ -25,9 +25,7 @@ public class VoxitoneMenu implements ModMenuApi {
             cT.setTooltip(new TranslatableText("option.voxitone.close.tooltip"),
                 new LiteralText("§7Default: True"));
             cT.setDefaultValue(true);
-            cT.setSaveConsumer(newValue -> {
-                Voxitone.config.closeOnPath = newValue;
-            });
+            cT.setSaveConsumer(newValue -> Voxitone.config.closeOnPath = newValue);
             general.addEntry(cT.build());
 
 
@@ -37,9 +35,7 @@ public class VoxitoneMenu implements ModMenuApi {
             cT.setTooltip(new TranslatableText("option.voxitone.tempwaypoint.tooltip"),
                 new LiteralText("§7Default: True"));
             cT.setDefaultValue(true);
-            cT.setSaveConsumer(newValue -> {
-                Voxitone.config.tempWaypoints = newValue;
-            });
+            cT.setSaveConsumer(newValue -> Voxitone.config.tempWaypoints = newValue);
             general.addEntry(cT.build());
 
             // toggle enable temp waypoint
@@ -59,9 +55,7 @@ public class VoxitoneMenu implements ModMenuApi {
             cT.setTooltip(new TranslatableText("option.voxitone.drawonminimap.tooltip"),
                 new LiteralText("§7Default: True"));
             cT.setDefaultValue(true);
-            cT.setSaveConsumer(newValue -> {
-                Voxitone.config.drawPathOnMinimap = newValue;
-            });
+            cT.setSaveConsumer(newValue -> Voxitone.config.drawPathOnMinimap = newValue);
             general.addEntry(cT.build());
             
             // toggle draw on map
@@ -70,14 +64,10 @@ public class VoxitoneMenu implements ModMenuApi {
             cT.setTooltip(new TranslatableText("option.voxitone.drawonmap.tooltip"),
                 new LiteralText("§7Default: True"));
             cT.setDefaultValue(true);
-            cT.setSaveConsumer(newValue -> {
-                Voxitone.config.drawPathOnMap = newValue;
-            });
+            cT.setSaveConsumer(newValue -> Voxitone.config.drawPathOnMap = newValue);
             general.addEntry(cT.build());
             
-            builder.setSavingRunnable(() -> {
-                Voxitone.saveConfig();
-            });
+            builder.setSavingRunnable(Voxitone::saveConfig);
             return builder.build();
         };
     }

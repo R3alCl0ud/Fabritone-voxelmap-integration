@@ -32,9 +32,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	//modRuntime name: "fabricmod_VoxelMap-1.10.10_for_1.16.2"
-	modImplementation name: "fabric-example-mod-1.0.0-dev"
-	modImplementation name: "baritone-1.6.2-dev"
+
+	modImplementation "voxelmap:voxelmap:1.10.14"
+	modImplementation "baritone:baritone-api-fabric:1.6.3"
 	
 	modImplementation("io.github.prospector:modmenu:${project.mod_menu_version}") {
         transitive = false

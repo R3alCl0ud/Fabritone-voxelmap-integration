@@ -64,7 +64,7 @@ public class BaritoneEventListener implements IGameEventListener {
         if (goalWP == null)
             genWaypoint();
         // cancel if not actually the baritone goal wp
-        if (goalWP.name != "^Baritone Goal") return false;
+        if (!goalWP.name.equals("^Baritone Goal")) return false;
         goalWP.x = (int) (x * scale);
         goalWP.z = (int) (z * scale);
         return true;
@@ -104,7 +104,7 @@ public class BaritoneEventListener implements IGameEventListener {
 
 
             // remove temp waypoint if config disables them, shortcut rest of function
-            if (!Voxitone.config.tempWaypoints && goalWP != null && goalWP.name == "^Baritone Goal") {
+            if (!Voxitone.config.tempWaypoints && goalWP != null && goalWP.name.equals("^Baritone Goal")) {
                 waypointManager.deleteWaypoint(goalWP);
                 return;
             }
@@ -112,7 +112,7 @@ public class BaritoneEventListener implements IGameEventListener {
             if (goalWP == null) genWaypoint();
 
             // update dimension list for goal wp
-            if (goalWP.name == "^Baritone Goal") {
+            if (goalWP.name.equals("^Baritone Goal")) {
                 World world;
                 if ((world = (World) mc.world) != null) {
                     DimensionContainer dim = AbstractVoxelMap.getInstance().getDimensionManager()
@@ -143,7 +143,7 @@ public class BaritoneEventListener implements IGameEventListener {
             }
 
             // remove waypoint since goal isn't handled or is null
-            if (goalWP.name == "^Baritone Goal") {
+            if (goalWP.name.equals("^Baritone Goal")) {
                 waypointManager.deleteWaypoint(goalWP);
             } else {
                 goalWP = null;

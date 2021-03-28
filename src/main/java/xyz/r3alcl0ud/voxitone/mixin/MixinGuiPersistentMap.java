@@ -86,14 +86,14 @@ public class MixinGuiPersistentMap {
                 IBaritone baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
                 Goal gb;
                 if (hovered != null) {
-                    if (BaritoneEventListener.goalWP != null && BaritoneEventListener.goalWP.name == "^Baritone Goal")
+                    if (BaritoneEventListener.goalWP != null && BaritoneEventListener.goalWP.name.equals("^Baritone Goal"))
                         waypointManager.deleteWaypoint(BaritoneEventListener.goalWP);
                     BaritoneEventListener.goalWP = hovered;
                     
-                    gb = new GoalBlock(hovered.x, hovered.y, hovered.z);
+                    gb = new GoalBlock(hovered.getX(), hovered.getY(), hovered.getZ());
                 } else {
                     if (BaritoneEventListener.goalWP != null && Voxitone.config.tempWaypoints) {
-                        if (!(BaritoneEventListener.goalWP.name == "^Baritone Goal"))
+                        if (!(BaritoneEventListener.goalWP.name.equals("^Baritone Goal")))
                             waypointManager.addWaypoint(BaritoneEventListener.genWaypoint());
                         BaritoneEventListener.setPos((int)x, y, (int)z);
                     }
