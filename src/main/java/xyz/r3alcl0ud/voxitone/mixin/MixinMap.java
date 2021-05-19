@@ -4,6 +4,7 @@ import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -35,7 +36,7 @@ public class MixinMap {
     }
 
     @Inject(at = @At("RETURN"), method = "getPixelColor", remap = false, cancellable = true)
-    public void getPixelColor(boolean needBiome, boolean needHeightAndID, boolean needTint, boolean needLight, boolean nether, boolean caves, ClientWorld world, int multi, int startX, int startZ, int imageX, int imageY, CallbackInfoReturnable<Integer> cir) {
+    public void getPixelColor(boolean needBiome, boolean needHeightAndID, boolean needTint, boolean needLight, boolean nether, boolean caves, @Coerce World world, int multi, int startX, int startZ, int imageX, int imageY, CallbackInfoReturnable<Integer> cir) {
         if (Voxitone.config.drawPathOnMinimap && baritone.getPathingBehavior().isPathing()) {
             int x = startX + imageX, z = startZ + imageY;
             for (BetterBlockPos pos : baritone.getPathingBehavior().getCurrent().getPath().positions()) {

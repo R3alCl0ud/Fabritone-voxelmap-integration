@@ -1,6 +1,7 @@
 package xyz.r3alcl0ud.voxitone;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class BaritoneEventListener implements IGameEventListener {
         goalWP = new Waypoint("^Baritone Goal", 0, 0, 0, Voxitone.config.shouldWaypointEnable, 0F, 1F, 0F, "star",
             vmWaypointManager.getCurrentSubworldDescriptor(false), new TreeSet<>());
         World world;
-        if ((world = (World) mc.world) != null) {
+        if ((world = mc.world) != null) {
             DimensionContainer dim = dimensionManager.getDimensionContainerByWorld(world);
             goalWP.dimensions.add(dim);
         }
@@ -84,11 +85,21 @@ public class BaritoneEventListener implements IGameEventListener {
     }
 
     public static boolean setPos(int x, int z) {
+        Optional<Waypoint> wp = vmWaypointManager.getWaypoints().stream().filter(e -> e.getX() == x && e.getZ() == z).findFirst();
+        if (wp.isPresent()) {
+            goalWP = wp.get();
+            return false;
+        }
         return setPos(x, z, coordScale);
     }
 
     public static boolean setPos(int x, int y, int z) {
-        if (setPos(x, z)) {
+        Optional<Waypoint> wp = vmWaypointManager.getWaypoints().stream().filter(e -> e.getX() == x && e.getY() == y && e.getZ() == z).findFirst();
+        if (wp.isPresent()) {
+            goalWP = wp.get();
+            return false;
+        }
+        if (setPos(x, z, coordScale)) {
             goalWP.y = y;
             return true;
         }
@@ -122,7 +133,7 @@ public class BaritoneEventListener implements IGameEventListener {
             // update dimension list for goal wp
             if (goalWP.name.equals("^Baritone Goal")) {
                 World world;
-                if ((world = (World) mc.world) != null) {
+                if ((world = mc.world) != null) {
                     DimensionContainer dim = AbstractVoxelMap.getInstance().getDimensionManager()
                         .getDimensionContainerByWorld(world);
                     goalWP.dimensions.add(dim);
@@ -141,7 +152,9 @@ public class BaritoneEventListener implements IGameEventListener {
                         vmWaypointManager.addWaypoint(goalWP);
                     return;
                 } else if (g instanceof GoalXZ) {
-                    setPos(((GoalXZ) g).getX(), ((GoalXZ) g).getZ());
+                    if (setPos(((GoalXZ) g).getX(), ((GoalXZ) g).getZ())) {
+                        goalWP.y = 64;
+                    }
 
                     // add waypoint
                     if (!vmWaypointManager.getWaypoints().contains(goalWP))
