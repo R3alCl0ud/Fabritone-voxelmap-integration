@@ -10,5 +10,9 @@
 	"option.voxitone.drawonminimap": "Draw Path on Minimap",
 	"option.voxitone.drawonminimap.tooltip": "Whether or not the current path should be drawn on the minimap.",
 	"option.voxitone.drawonmap": "Draw Path on VoxelMap",
-	"option.voxitone.drawonmap.tooltip": "Whether or not the current path should be drawn on the full screen VoxelMap."
+	"option.voxitone.drawonmap.tooltip": "Whether or not the current path should be drawn on the full screen VoxelMap.",
+	"option.voxitone.syncwp": "Sync Waypoints",
+	"option.voxitone.syncwp.tooltip": "Should waypoints be the same in baritone and VoxelMap.",
+	"option.voxitone.deathwp": "Don't Sync Death Waypoints",
+	"option.voxitone.deathwp.tooltip": "Should Death waypoints sync."
 }

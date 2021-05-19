@@ -25,48 +25,48 @@ import xyz.r3alcl0ud.voxitone.Voxitone;
 @Mixin(value = GuiPersistentMap.class, remap = false)
 public class MixinGuiPersistentMap {
 
-    @Shadow(remap = false)
+    @Shadow
     private IWaypointManager waypointManager;
     
-    @Shadow(remap = false)
+    @Shadow
     float mapCenterZ;
 
-    @Shadow(remap = false)
+    @Shadow
     float mapCenterX;
 
-    @Shadow(remap = false)
+    @Shadow
     int centerY;
 
-    @Shadow(remap = false)
+    @Shadow
     int centerX;
 
-    @Shadow(remap = false)
+    @Shadow
     private int top;
 
-    @Shadow(remap = false)
+    @Shadow
     private float mouseDirectToMap;
 
-    @Shadow(remap = false)
+    @Shadow
     private float guiToDirectMouse;
 
-    @Shadow(remap = false)
+    @Shadow
     private float guiToMap;
 
-    @Shadow(remap = false)
+    @Shadow
     private boolean oldNorth;
 
-    @Shadow(remap = false)
+    @Shadow
     private IPersistentMap persistentMap;
 
-    @Shadow(remap = false)
+    @Shadow
     private MinecraftClient mc;
 
-    @Shadow(remap = false)
+    @Shadow
     private Waypoint getHovered(float x, float z) {
         return null;
     }
 
-    @Inject(remap = false, cancellable = true, at = @At("TAIL"), method = "popupAction")
+    @Inject(cancellable = true, at = @At("TAIL"), method = "popupAction")
     private void onPopupAction(Popup popup, int action, CallbackInfo info) {
         if (action == 420) {
             synchronized (Voxitone.listener) {

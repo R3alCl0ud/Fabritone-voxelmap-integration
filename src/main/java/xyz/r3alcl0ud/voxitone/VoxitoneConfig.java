@@ -10,6 +10,10 @@ public class VoxitoneConfig {
     public boolean drawPathOnMinimap = true;
     
     public boolean drawPathOnMap = true;
+
+    public boolean syncWaypoints = true;
+
+    public boolean dontSyncDeathWaypoints = true;
     
     
     public VoxitoneConfig() {

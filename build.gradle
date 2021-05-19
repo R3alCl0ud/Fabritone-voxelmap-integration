@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.4-SNAPSHOT'
+	id 'fabric-loom' version '0.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -12,15 +12,23 @@ group = project.maven_group
 
 
 repositories {
+	mavenCentral()
 	flatDir {
 		dirs 'libs'
 	}
-		maven {url = "https://impactdevelopment.github.io/maven/"}
 	maven {
         name "Modmuss50 Repository"
         url 'https://maven.fabricmc.net/'
     }
-
+	maven {
+		url "https://www.cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	maven {
+		url 'https://maven.shedaniel.me/'
+	}
 }
 
 dependencies {
@@ -33,12 +41,13 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "voxelmap:voxelmap:1.10.14"
-	modImplementation "baritone:baritone-api-fabric:1.6.3"
+	modImplementation "curse.maven:voxelmap-225179:3197679"
+	modImplementation "baritone:baritone-unoptimized-fabric:1.6.3"
 	
 	modImplementation("io.github.prospector:modmenu:${project.mod_menu_version}") {
         transitive = false
     }
+
     modImplementation "me.shedaniel.cloth:config-2:4.8.1"
     include "me.shedaniel.cloth:config-2:4.8.1"
     

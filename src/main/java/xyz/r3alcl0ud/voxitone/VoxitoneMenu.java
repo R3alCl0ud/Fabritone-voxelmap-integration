@@ -23,7 +23,7 @@ public class VoxitoneMenu implements ModMenuApi {
             BooleanToggleBuilder cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.close"),
                 Voxitone.config.closeOnPath);
             cT.setTooltip(new TranslatableText("option.voxitone.close.tooltip"),
-                new LiteralText("§7Default: True"));
+                new LiteralText("§7Default: §6True"));
             cT.setDefaultValue(true);
             cT.setSaveConsumer(newValue -> Voxitone.config.closeOnPath = newValue);
             general.addEntry(cT.build());
@@ -33,7 +33,7 @@ public class VoxitoneMenu implements ModMenuApi {
             cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.tempwaypoint"),
                 Voxitone.config.tempWaypoints);
             cT.setTooltip(new TranslatableText("option.voxitone.tempwaypoint.tooltip"),
-                new LiteralText("§7Default: True"));
+                new LiteralText("§7Default: §6True"));
             cT.setDefaultValue(true);
             cT.setSaveConsumer(newValue -> Voxitone.config.tempWaypoints = newValue);
             general.addEntry(cT.build());
@@ -42,7 +42,7 @@ public class VoxitoneMenu implements ModMenuApi {
             cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.enablewaypoint"),
                 Voxitone.config.shouldWaypointEnable);
             cT.setTooltip(new TranslatableText("option.voxitone.enablewaypoint.tooltip"),
-                new LiteralText("§7Default: True"));
+                new LiteralText("§7Default: §6True"));
             cT.setDefaultValue(true);
             cT.setSaveConsumer(newValue -> {
                 Voxitone.config.shouldWaypointEnable = newValue;
@@ -53,7 +53,7 @@ public class VoxitoneMenu implements ModMenuApi {
             cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.drawonminimap"),
                 Voxitone.config.drawPathOnMinimap);
             cT.setTooltip(new TranslatableText("option.voxitone.drawonminimap.tooltip"),
-                new LiteralText("§7Default: True"));
+                new LiteralText("§7Default: §6True"));
             cT.setDefaultValue(true);
             cT.setSaveConsumer(newValue -> Voxitone.config.drawPathOnMinimap = newValue);
             general.addEntry(cT.build());
@@ -62,11 +62,29 @@ public class VoxitoneMenu implements ModMenuApi {
             cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.drawonmap"),
                 Voxitone.config.drawPathOnMap);
             cT.setTooltip(new TranslatableText("option.voxitone.drawonmap.tooltip"),
-                new LiteralText("§7Default: True"));
+                new LiteralText("§7Default: §6True"));
             cT.setDefaultValue(true);
             cT.setSaveConsumer(newValue -> Voxitone.config.drawPathOnMap = newValue);
             general.addEntry(cT.build());
-            
+
+            //toggle waypoint sync
+            cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.syncwp"),
+                Voxitone.config.syncWaypoints);
+            cT.setTooltip(new TranslatableText("option.voxitone.syncwp.tooltip"),
+                new LiteralText("§7Default: §6True"));
+            cT.setDefaultValue(true);
+            cT.setSaveConsumer(newValue -> Voxitone.config.syncWaypoints = newValue);
+            general.addEntry(cT.build());
+
+            // toggle death waypoint syncing
+            cT = entryBuilder.startBooleanToggle(new TranslatableText("option.voxitone.deathwp"),
+                Voxitone.config.dontSyncDeathWaypoints);
+            cT.setTooltip(new TranslatableText("option.voxitone.deathwp.tooltip"),
+                new LiteralText("§7Default: §6True"));
+            cT.setDefaultValue(true);
+            cT.setSaveConsumer(newValue -> Voxitone.config.dontSyncDeathWaypoints = newValue);
+            general.addEntry(cT.build());
+
             builder.setSavingRunnable(Voxitone::saveConfig);
             return builder.build();
         };

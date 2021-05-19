@@ -23,6 +23,7 @@ public class MixinPersistentMap {
     @Unique
     private static IBaritone baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
 
+    //TODO: redo this as a layer render in MixinGuiPersistentMap
     @Inject(at = @At("TAIL"), method = "getPixelColor", remap = false, cancellable = true)
     public void getPixelColor(AbstractMapData mapData, ClientWorld world, MutableBlockPos blockPos,
         MutableBlockPos loopBlockPos, boolean underground, int multi, int startX, int startZ, int imageX, int imageY,
