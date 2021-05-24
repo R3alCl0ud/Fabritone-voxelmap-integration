@@ -226,7 +226,7 @@ public class BaritoneEventListener implements IGameEventListener {
         for (Map.Entry<BetterBlockPos, Waypoint> vmWp : vmWaypoints.entrySet()) {
             if (!btWaypoints.containsKey(vmWp.getKey())) {
                 if (!vmWp.getValue().name.startsWith("^")) {
-                    if (Voxitone.config.dontSyncDeathWaypoints && isDeathWp(vmWp.getValue())) continue;
+                    if (!Voxitone.config.syncWaypoints || (Voxitone.config.dontSyncDeathWaypoints && isDeathWp(vmWp.getValue()))) continue;
 
                     btWaypointManager.addWaypoint(new baritone.api.cache.Waypoint(vmWp.getValue().name.replaceAll("\\s", "_") + "_voxelmap", IWaypoint.Tag.USER, vmWp.getKey()));
                 } else if (!vmWp.getValue().name.equals("^Baritone Goal")) {
@@ -237,7 +237,7 @@ public class BaritoneEventListener implements IGameEventListener {
         for (Map.Entry<BetterBlockPos, IWaypoint> btWp : btWaypoints.entrySet()) {
             if (!vmWaypoints.containsKey(btWp.getKey())) {
                 if (!btWp.getValue().getName().endsWith("_voxelmap")) {
-                    if (Voxitone.config.dontSyncDeathWaypoints && btWp.getValue().getTag() == IWaypoint.Tag.DEATH) continue;
+                    if (!Voxitone.config.syncWaypoints || (Voxitone.config.dontSyncDeathWaypoints && btWp.getValue().getTag() == IWaypoint.Tag.DEATH)) continue;
 
                     BetterBlockPos val = btWp.getKey();
 
@@ -258,8 +258,13 @@ public class BaritoneEventListener implements IGameEventListener {
     @Override
     public void onWorldEvent(WorldEvent arg0) {
         if (arg0.getState().equals(EventState.POST)) {
-            btWaypointManager = baritone.getWorldProvider().getCurrentWorld().getWaypoints();
-            coordScale = arg0.getWorld().getDimension().getCoordinateScale();
+            try {
+                btWaypointManager = baritone.getWorldProvider().getCurrentWorld().getWaypoints();
+                coordScale = arg0.getWorld().getDimension().getCoordinateScale();
+            } catch (NullPointerException ex) {
+                System.err.println("IGNORE THE FOLLOWING ERROR IF IN A REPLAYMOD REPLAY");
+                ex.printStackTrace();
+            }
         }
     }
 
